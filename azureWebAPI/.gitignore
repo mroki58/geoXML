@@ -1,0 +1,43 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Secrets and sensitive files
+*.pfx
+*.key
+*.cer
+*.env
+
+# VS Code settings (optional)
+.vscode/
+
+# Test results
+TestResults/
+*.coverage
+*.coveragexml
+
+# Dotnet tools cache
+.dotnet/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Publish output
+publish/
+out/
+
+# EF Core tools output (optional)
+Migrations/DesignTimeBuild/
+
+# Properties
+Properties/
