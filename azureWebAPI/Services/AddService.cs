@@ -1,8 +1,6 @@
 using azureWebAPI.Models;
 using azureWebAPI.Database;
 using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Xml;
 
 namespace azureWebAPI.Services;
@@ -22,16 +20,17 @@ public class AddService : IAddService
     }
 
  
-    public ReturnMessage AddXMLToDb(string json)
+    public ReturnMessage AddXMLToDb(string xml)
     {
 
-        // Parse JSON string to JObject
-        var jsonObject = JObject.Parse(json);
-        // Convert JObject to XML
-        XmlDocument? xmlDocument = JsonConvert.DeserializeXmlNode(jsonObject.ToString(), "Root");
-        if (xmlDocument == null)
+        XmlDocument? xmlDocument = new XmlDocument();
+        try
         {
-            throw new InvalidOperationException("Failed to convert JSON to XML.");
+            xmlDocument.LoadXml(xml);
+        }
+        catch (XmlException ex)
+        {
+            throw new InvalidOperationException("Invalid XML format.", ex);
         }
 
         string query = "INSERT INTO dbo.xmltable (Content) VALUES (@xml_value)";

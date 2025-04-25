@@ -6,7 +6,7 @@ namespace azureWebAPI.Database;
 
 public class AzureDbContext 
 {
-    public readonly string ConnectionString;
+    public readonly string? ConnectionString;
     public AzureDbContext()
     {
         Env.Load();
@@ -19,6 +19,11 @@ public class AzureDbContext
 
     public string GetConnectionString()
     {
-       return ConnectionString;
+        if (string.IsNullOrEmpty(ConnectionString))
+        {
+            throw new Exception("Connection string is not set.");
+        }
+        
+        return ConnectionString;
     }
 }

@@ -1,0 +1,50 @@
+using azureWebAPI.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace azureWebAPI.Controllers;
+
+[ApiController]
+[Route("xml")]
+public class AddController : ControllerBase
+{
+    private readonly IAddService _aService;
+    private readonly IDeleteService _dService;
+
+    public AddController(IAddService addService, IDeleteService deleteService)
+    {
+        _aService = addService;
+        _dService = deleteService;
+    }
+
+    private async Task<string> GetRawContent()
+    {
+        string rawContent = string.Empty;
+        using (var reader = new StreamReader(Request.Body,
+                  encoding: Encoding.UTF8,
+                  detectEncodingFromByteOrderMarks: false))
+        {
+            rawContent = await reader.ReadToEndAsync();
+        }
+        return rawContent;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> PostXml()
+    {
+        string body = await GetRawContent();
+        var msg = _aService.AddXMLToDb(body);
+        return Ok(msg);
+    }
+
+    [HttpDelete]
+    public IActionResult DeleteXmlForNode([FromQuery] string nodeName, [FromQuery] string nodeValue)
+    {
+        var msg = _dService.DeleteXmlForNode(nodeName, nodeValue);
+        return Ok(msg);
+    }
+ 
+
+
+}
