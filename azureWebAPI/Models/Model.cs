@@ -1,7 +1,7 @@
 namespace azureWebAPI.Models;
 
-public class TestItem
+public class ReturnMessage
 {
-    public int Id { get; set; }
-    public string Value { get; set; }
+    public string? message { get; set; }
+    
 }

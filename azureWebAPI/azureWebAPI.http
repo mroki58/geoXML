@@ -1,6 +1,6 @@
 @azureWebAPI_HostAddress = http://localhost:5032
 
-GET {{azureWebAPI_HostAddress}}/testitem/
+POST {{azureWebAPI_HostAddress}}/xml/add
 Accept: application/json
 
 ###
