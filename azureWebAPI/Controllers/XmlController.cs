@@ -44,6 +44,14 @@ public class AddController : ControllerBase
         var msg = _dService.DeleteXmlForNode(nodeName, nodeValue);
         return Ok(msg);
     }
+
+    [HttpDelete]
+    [Route("attr")]
+    public IActionResult DeleteXmlForAttribute([FromQuery] string nodeName,[FromQuery] string attrName, [FromQuery] string attrValue)
+    {
+        var msg = _dService.DeleteXmlForAttribute(nodeName, attrName, attrValue);
+        return Ok(msg);
+    }
  
 
 
