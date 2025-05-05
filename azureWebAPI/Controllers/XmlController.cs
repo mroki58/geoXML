@@ -11,9 +11,11 @@ public class AddController : ControllerBase
 {
     private readonly IAddService _aService;
     private readonly IDeleteService _dService;
+    private readonly ISearchService _sService;
 
-    public AddController(IAddService addService, IDeleteService deleteService)
+    public AddController(IAddService addService, IDeleteService deleteService, ISearchService searchService)
     {
+        _sService = searchService;
         _aService = addService;
         _dService = deleteService;
     }
@@ -53,6 +55,21 @@ public class AddController : ControllerBase
         return Ok(msg);
     }
  
-
+    [HttpGet]
+    [Route("str")]
+    public IActionResult GetStringValueNode([FromQuery] int id, [FromQuery] string path)
+    {
+        if (string.IsNullOrEmpty(path))
+        {
+            return BadRequest("Path is null or empty.");
+        }
+        if (id <= 0)
+        {
+            return BadRequest("Id must be greater than 0.");
+        }
+    {
+        var msg = _sService.GetStringValueNode(path, id);
+        return Ok(msg);
+    }
 
 }

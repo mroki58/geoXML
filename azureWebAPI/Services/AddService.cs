@@ -7,7 +7,7 @@ namespace azureWebAPI.Services;
 
 public interface IAddService
 {
-    ReturnMessage AddXMLToDb(string json); 
+    ReturnMessage AddXMLToDb(string xml); 
 }
 
 public class AddService : IAddService

@@ -8,6 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAddService, AddService>();
 builder.Services.AddScoped<IDeleteService, DeleteService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 
 builder.Services.AddSingleton<AzureDbContext>();
 builder.Services.AddControllers(); 
