@@ -12,12 +12,14 @@ public class AddController : ControllerBase
     private readonly IAddService _aService;
     private readonly IDeleteService _dService;
     private readonly ISearchService _sService;
+    private readonly IModifyService _mService;
 
-    public AddController(IAddService addService, IDeleteService deleteService, ISearchService searchService)
+    public AddController(IAddService addService, IDeleteService deleteService, ISearchService searchService, IModifyService modifyService)
     {
         _sService = searchService;
         _aService = addService;
         _dService = deleteService;
+        _mService = modifyService;
     }
 
     private async Task<string> GetRawContent()
@@ -57,7 +59,7 @@ public class AddController : ControllerBase
  
     [HttpGet]
     [Route("str")]
-    public IActionResult GetStringValueNode([FromQuery] int id, [FromQuery] string path)
+    public IActionResult GetXmlNode([FromQuery] int id, [FromQuery] string path)
     {
         if (string.IsNullOrEmpty(path))
         {
@@ -68,8 +70,10 @@ public class AddController : ControllerBase
             return BadRequest("Id must be greater than 0.");
         }
     
-        var msg = _sService.GetStringValueNode(path, id);
+        var msg = _sService.GetXmlNode(path, id);
         return Ok(msg);
     }
+
+    // dwa endpointy dla modyfikacji do dodania
 
 }

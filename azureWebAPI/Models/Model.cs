@@ -7,14 +7,9 @@ public class ReturnMessage
 }
 
 //
-public class StringData
+public class XmlData
 {
     public List<string>? data { get; set; } 
     public string? message { get; set; }
 }
 
-public class XMLData
-{
-    public string? xml { get; set; } 
-    public string? message { get; set; }
-}

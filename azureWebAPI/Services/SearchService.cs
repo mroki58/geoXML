@@ -7,7 +7,7 @@ namespace azureWebAPI.Services;
 
 public interface ISearchService
 {
-    StringData GetStringValueNode(string path, int id); 
+    XmlData GetXmlNode(string path, int id); 
 }
 
 public class SearchService : ISearchService
@@ -20,9 +20,9 @@ public class SearchService : ISearchService
     }
 
  
-    public StringData GetStringValueNode(string path, int id)
+    public XmlData GetXmlNode(string path, int id)
     {
-         try
+        try
         {
             XPathExpression.Compile(path); // Sprawdzenie poprawności XPath
         }
@@ -32,7 +32,7 @@ public class SearchService : ISearchService
         }
 
 
-        StringData? stringData = new StringData();
+        XmlData? stringData = new XmlData();
 
         string query = "SELECT C.query('.') as result " + 
                         "FROM dbo.xmltable  " +
@@ -75,4 +75,5 @@ public class SearchService : ISearchService
         return stringData;
         
     }
+    
 }
