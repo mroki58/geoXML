@@ -1,7 +1,7 @@
 using azureWebAPI.Models;
 using azureWebAPI.Database;
 using Microsoft.Data.SqlClient;
-using System.Xml;
+using System.Xml.XPath;
 
 namespace azureWebAPI.Services;
 
@@ -22,18 +22,21 @@ public class SearchService : ISearchService
  
     public StringData GetStringValueNode(string path, int id)
     {
+         try
+        {
+            XPathExpression.Compile(path); // Sprawdzenie poprawności XPath
+        }
+        catch (XPathException)
+        {
+            throw new ArgumentException("Invalid XPath.");
+        }
+
 
         StringData? stringData = new StringData();
 
-        if(path == null || path == "")
-        {
-            stringData.message = "Path is null or empty.";
-            return stringData;
-        }
-
         string query = "SELECT C.query('.') as result " + 
                         "FROM dbo.xmltable  " +
-                        "CROSS APPLY Content.nodes(\'@path\') as T(C) "  +
+                        $"CROSS APPLY Content.nodes('{path}') as T(C) "  +
                         "WHERE id= @id ";
         SqlCommand cmd = new SqlCommand(query);
         cmd.Parameters.AddWithValue("@path", path);

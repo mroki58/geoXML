@@ -67,7 +67,7 @@ public class AddController : ControllerBase
         {
             return BadRequest("Id must be greater than 0.");
         }
-    {
+    
         var msg = _sService.GetStringValueNode(path, id);
         return Ok(msg);
     }
