@@ -9,7 +9,8 @@ public class ReturnMessage
 //
 public class XmlData
 {
-    public List<string>? data { get; set; } 
+    public SortedDictionary<int, List<string>>? data { get; set; } 
     public string? message { get; set; }
+   
 }
 

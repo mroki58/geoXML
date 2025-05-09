@@ -59,21 +59,41 @@ public class AddController : ControllerBase
  
     [HttpGet]
     [Route("str")]
-    public IActionResult GetXmlNode([FromQuery] int id, [FromQuery] string path)
+    public IActionResult GetXmlNode([FromQuery] string path)
     {
         if (string.IsNullOrEmpty(path))
         {
             return BadRequest("Path is null or empty.");
         }
-        if (id <= 0)
-        {
-            return BadRequest("Id must be greater than 0.");
-        }
-    
-        var msg = _sService.GetXmlNode(path, id);
+        
+        var msg = _sService.GetXmlNode(path);
         return Ok(msg);
     }
 
-    // dwa endpointy dla modyfikacji do dodania
+    [HttpPatch]
+    [Route("node/{id}")]
+    public IActionResult ModifyNodeValue([FromQuery] string path, [FromQuery] string value, [FromRoute] int id)
+    {
+        if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(value))
+        {
+            return BadRequest("Path or value is null or empty.");
+        }
+        
+        var msg = _mService.ModifyNodeValue(path, value, id);
+        return Ok(msg);
+    }
+   
+    [HttpPatch]
+    [Route("attr/{id}")]
+    public IActionResult ModifyAttrValue([FromQuery] string path, [FromQuery] string attr, [FromQuery] string value, [FromRoute] int id)
+    {
+        if (string.IsNullOrEmpty(path) || string.IsNullOrEmpty(attr) || string.IsNullOrEmpty(value))
+        {
+            return BadRequest("Path, attribute or value is null or empty.");
+        }
+        
+        var msg = _mService.ModifyAttrValue(path, attr, value, id);
+        return Ok(msg);
+    }
 
 }

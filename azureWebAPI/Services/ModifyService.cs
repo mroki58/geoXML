@@ -38,7 +38,7 @@ public class ModifyService : IModifyService
         }
    
         string query = "UPDATE dbo.xmltable " +
-                       $"SET Content.modify('replace value of {path}/text() with \"{value}\"') " +
+                       $"SET Content.modify('replace value of ({path}/text())[1] with \"{value}\"') " +
                        "WHERE id= @id ";
 
         return Modify(query, id);
@@ -67,8 +67,8 @@ public class ModifyService : IModifyService
         }
 
         string query = "UPDATE dbo.xmltable " +
-                       $"SET Content.modify('replace value of {path}/@{attr} with \"{value}\"') " +
-                       "WHERE id= @id ";
+                       $"SET Content.modify('replace value of ({path}/@{attr})[1] with \"{value}\"') " +
+                       "WHERE id = @id ";
         return Modify(query, id);
         
     }

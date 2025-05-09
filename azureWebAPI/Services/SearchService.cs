@@ -7,7 +7,7 @@ namespace azureWebAPI.Services;
 
 public interface ISearchService
 {
-    XmlData GetXmlNode(string path, int id); 
+    XmlData GetXmlNode(string path); 
 }
 
 public class SearchService : ISearchService
@@ -20,7 +20,7 @@ public class SearchService : ISearchService
     }
 
  
-    public XmlData GetXmlNode(string path, int id)
+    public XmlData GetXmlNode(string path)
     {
         try
         {
@@ -34,14 +34,11 @@ public class SearchService : ISearchService
 
         XmlData? stringData = new XmlData();
 
-        string query = "SELECT C.query('.') as result " + 
+        string query = "SELECT id, C.query('.') as result " + 
                         "FROM dbo.xmltable  " +
-                        $"CROSS APPLY Content.nodes('{path}') as T(C) "  +
-                        "WHERE id= @id ";
+                        $"CROSS APPLY Content.nodes('{path}') as T(C) ";
+        
         SqlCommand cmd = new SqlCommand(query);
-        cmd.Parameters.AddWithValue("@path", path);
-        cmd.Parameters.AddWithValue("@id", id);
-
         SqlDataReader? reader;
 
         using (var connection = new SqlConnection(_connectionString))
@@ -52,13 +49,21 @@ public class SearchService : ISearchService
 
             if (reader.HasRows)
             {
-                List<string> data = new List<string>();
+                SortedDictionary<int, List<string>> data = new SortedDictionary<int, List<string>>();
                 while (reader.Read())
                 {
-                    string? value = reader.GetString(0);
+                    int idValue = reader.GetInt32(0);
+                    string? value = reader.GetString(1);
                     if (value != null)
                     {
-                        data.Add(value);
+                        if (data.ContainsKey(idValue))
+                        {
+                            data[idValue].Add(value);
+                        }
+                        else
+                        {
+                            data.Add(idValue, new List<string>() {value} );
+                        }                   
                     }
                 }
                 stringData.data = data;
