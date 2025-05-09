@@ -59,14 +59,14 @@ public class AddController : ControllerBase
  
     [HttpGet]
     [Route("str")]
-    public IActionResult GetXmlNode([FromQuery] string path)
+    public IActionResult GetXmlNodes([FromQuery] string path)
     {
         if (string.IsNullOrEmpty(path))
         {
             return BadRequest("Path is null or empty.");
         }
         
-        var msg = _sService.GetXmlNode(path);
+        var msg = _sService.GetXmlValues(path);
         return Ok(msg);
     }
 

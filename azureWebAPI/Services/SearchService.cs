@@ -7,7 +7,7 @@ namespace azureWebAPI.Services;
 
 public interface ISearchService
 {
-    XmlData GetXmlNode(string path); 
+    XmlData GetXmlValues(string path); 
 }
 
 public class SearchService : ISearchService
@@ -20,7 +20,7 @@ public class SearchService : ISearchService
     }
 
  
-    public XmlData GetXmlNode(string path)
+    public XmlData GetXmlValues(string path)
     {
         try
         {
