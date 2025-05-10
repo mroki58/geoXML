@@ -3,8 +3,8 @@ import { LandingPage } from "../layouts/LandingPage";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "geoXML" },
-    { name: "geoXML landing page", content: "geoXML options!" },
+    { title: "geoXML-upload" },
+    { name: "geoXML form", content: "geoXML form for uploading deposit" },
   ];
 }
 
