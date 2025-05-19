@@ -54,7 +54,7 @@ public class SearchService : ISearchService
                 {
                     int idValue = reader.GetInt32(0);
                     string? value = reader.GetString(1);
-                    if (value != null)
+                    if (value != null && value != "")
                     {
                         if (data.ContainsKey(idValue))
                         {

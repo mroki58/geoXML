@@ -8,6 +8,7 @@ public interface IDeleteService
 {
     ReturnMessage DeleteXmlForNode(string nodeName, string nodeValue);
     ReturnMessage DeleteXmlForAttribute(string nodeName, string attrName, string attrValue);
+    ReturnMessage DeleteXmlWhereNodeLessThan(string nodeName, decimal maxValue);
 }
 
 public class DeleteService : IDeleteService
@@ -33,18 +34,36 @@ public class DeleteService : IDeleteService
         return ExecuteDeleteQuery(query, parameters);
     }
     
+    public ReturnMessage DeleteXmlWhereNodeLessThan(string nodeName, decimal maxValue)
+    {
+        string query = @"
+            DELETE FROM dbo.xmltable
+            WHERE Content.exist(
+                '//*[local-name()=sql:variable(""@nodeName"") and number(text()) < sql:variable(""@maxValue"")]'
+            ) = 1";
+
+        SqlParameter[] parameters =
+        {
+            new SqlParameter("@nodeName", nodeName),
+            new SqlParameter("@maxValue", maxValue)
+        };
+
+        return ExecuteDeleteQuery(query, parameters);
+    }
+
+    
     public ReturnMessage DeleteXmlForAttribute(string nodeName, string attrName, string attrValue)
     {
         string query = "DELETE FROM dbo.xmltable " +
                      "WHERE Content.exist('//*[local-name()=sql:variable(\"@nodeName\") and @*[local-name()=sql:variable(\"@attrName\")]=sql:variable(\"@attrValue\")]') = 1";
-        
-        SqlParameter[] parameters = 
+
+        SqlParameter[] parameters =
         {
             new SqlParameter("@nodeName", nodeName),
             new SqlParameter("@attrName", attrName),
             new SqlParameter("@attrValue", attrValue)
         };
-        
+
         return ExecuteDeleteQuery(query, parameters);
     }
     

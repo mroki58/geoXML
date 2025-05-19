@@ -56,6 +56,14 @@ public class AddController : ControllerBase
         var msg = _dService.DeleteXmlForAttribute(nodeName, attrName, attrValue);
         return Ok(msg);
     }
+
+    [HttpDelete]
+    [Route("less")]
+    public IActionResult DeleteXmlWhereNodeLessThan([FromQuery] string nodeName, [FromQuery] decimal maxValue)
+    {
+        var msg = _dService.DeleteXmlWhereNodeLessThan(nodeName, maxValue);
+        return Ok(msg);
+    }
  
     [HttpGet]
     [Route("str")]
