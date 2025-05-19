@@ -14,15 +14,15 @@ builder.Services.AddScoped<IModifyService, ModifyService>();
 builder.Services.AddSingleton<AzureDbContext>();
 builder.Services.AddControllers(); 
 
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowSpecificOrigins", policy =>
-//     {
-//         policy.WithOrigins("https://example.com", "https://anotherdomain.com") 
-//               .AllowAnyHeader()
-//               .AllowAnyMethod();
-//     });
-// });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") 
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 
 var app = builder.Build();

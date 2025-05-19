@@ -21,8 +21,8 @@ N'<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="type" type="xs:string"/>
-              <xs:element name="estimatedVolume" type="xs:string"/>
-              <xs:element name="depth" type="xs:string"/>
+              <xs:element name="estimatedVolume" type="xs:decimal"/>
+              <xs:element name="depth" type="xs:decimal"/>
               <xs:element name="status" type="xs:string"/>
             </xs:sequence>
           </xs:complexType>
