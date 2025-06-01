@@ -7,6 +7,7 @@ namespace azureWebAPI.Services;
 
 public interface IAddService
 {
+    MyXML CreateXML(CreateXmlRequest req);
     ReturnMessage AddXMLToDb(string xml); 
 }
 
@@ -17,6 +18,37 @@ public class AddService : IAddService
     public AddService(AzureDbContext dbContext)
     {
         _connectionString = dbContext.GetConnectionString();
+    }
+
+    public MyXML CreateXML(CreateXmlRequest req)
+    {
+        MyXML result = new MyXML();
+
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var command = new SqlCommand(
+                @"SELECT dbo.createXMLForData(
+                    @name, @type, @estimatedVolume, @depth, @status, 
+                    @location, @region, @latitude, @longitude, @radius
+                )", connection);
+
+            command.Parameters.AddWithValue("@name", req.name ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@type", req.type ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@estimatedVolume", req.estimatedVolume);
+            command.Parameters.AddWithValue("@depth", req.depth);
+            command.Parameters.AddWithValue("@status", req.status ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@location", req.location ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@region", req.region ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@latitude", req.latitude);
+            command.Parameters.AddWithValue("@longitude", req.longitude);
+            command.Parameters.AddWithValue("@radius", req.radius);
+
+            connection.Open();
+            var xmlResult = command.ExecuteScalar();
+            result.xml = xmlResult?.ToString();
+        }
+
+        return result;
     }
 
  
@@ -49,9 +81,9 @@ public class AddService : IAddService
         {
             return new ReturnMessage { message = "XML data inserted successfully." };
         }
-        
+
         return new ReturnMessage { message = "Failed to insert XML data." };
-        
+
     }
 }
 

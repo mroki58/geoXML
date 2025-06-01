@@ -1,3 +1,4 @@
+using azureWebAPI.Models;
 using azureWebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -32,6 +33,14 @@ public class AddController : ControllerBase
             rawContent = await reader.ReadToEndAsync();
         }
         return rawContent;
+    }
+
+    [HttpPost]
+    [Route("create")]
+    public IActionResult CreateXML([FromBody] CreateXmlRequest request)
+    {
+        var xml = _aService.CreateXML(request);
+        return Ok(xml);
     }
 
     [HttpPost]
