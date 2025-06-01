@@ -114,15 +114,26 @@ async function onFormSubmit(event: any) {
     };
 
     try {
-        const response = await fetch("/api/xml/create", {
+        // Pobieranie XML z backendu - tworzenie go tam
+        const xmlResponse = await fetch("/api/xml/create", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
         });
-        const data = await response.text();
-        console.log("Odpowiedź z backendu:", data);
+        const xml = await xmlResponse.text();
+
+        // Wysłanie go do zapisania w bazie
+        const addResponse = await fetch("/api/xml", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/xml"
+            },
+            body: xml
+        });
+        const addResult = await addResponse.text();
+        console.log("Odpowiedź z dodawania do bazy:", addResult);
     } catch (error) {
         console.error("Błąd podczas wysyłania danych:", error);
     }

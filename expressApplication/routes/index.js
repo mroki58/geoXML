@@ -44,10 +44,10 @@ router.post('/xml/create', async function(req, res) {
 })
 
 
-router.post('/', bodyParser.text({type: 'application/xml'}) , async function(req, res) {
+router.post('/xml', express.text({type: 'application/xml'}), async function(req, res) {
   try {
-    const xml = req.body;
-
+    const xml = JSON.parse(req.body).xml;
+  
     const ans = await axios.post('http://localhost:5032/xml', xml, {
       headers: {
         'Content-Type': 'application/xml' 
