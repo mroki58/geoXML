@@ -1,13 +1,19 @@
+import type { Route } from "./+types/home";
 import { useParams } from "react-router";
+import { ModifyPage } from "../layouts/ModifyPage"
 
-export default function ModifyPage() {
+
+export async function clientLoader() {
+    const data = localStorage.getItem('data')
+    const jsonData = data ? JSON.parse(data) : {}
+    return jsonData
+}
+
+export default function Modify({loaderData}: Route.ComponentProps) {
     const { id } = useParams();
-
+    const content = loaderData && id ? loaderData[id] : {}
+    
     return (
-        <div>
-            <h1>Modyfikuj rekord</h1>
-            <p>ID rekordu: {id}</p>
-            {/* Tutaj możesz dodać formularz do edycji rekordu o danym ID */}
-        </div>
+        <ModifyPage content={content} id={id}/>
     );
 }

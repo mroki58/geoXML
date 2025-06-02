@@ -23,7 +23,7 @@ public class ModifyService : IModifyService
 
     public ReturnMessage ModifyNodeValue(string path, string value, int id)
     {
-        if(!Regex.IsMatch(value, @"^[a-zA-Z0-9]+$"))
+        if(!Regex.IsMatch(value, @"^[a-zA-Z0-9.,]+$"))
         {
             throw new ArgumentException("Invalid Value");
         }

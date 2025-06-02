@@ -66,10 +66,10 @@ router.patch('/radius/:id', async function(req, res) {
   await patchXmlNode(path, res);
 });
 
-router.patch('/depth/:id', async function(req, res) {
-  const { depth } = req.body;
+router.patch('/quantity/:id', async function(req, res) {
+  const { quantity } = req.body;
   const id = req.params.id;
-  const path = `/node/${id}?path=/deposit/geology/depth&value=${encodeURIComponent(depth)}`;
+  const path = `/node/${id}?path=/deposit/geology/estimatedVolume&value=${encodeURIComponent(quantity)}`;
   await patchXmlNode(path, res);
 });
 
