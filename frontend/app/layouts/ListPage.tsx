@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import { MdEdit, MdDelete } from "react-icons/md"
 import { useNavigate } from 'react-router';
 
-function deleteByName(name: string, setData: Function)
+function deleteByName(name: string, setData: Function, id: number)
 {
     fetch(`/api/deposit/name?nodeName=deposit&attrName=name&attrValue=${name}`, {
         method: 'delete'
@@ -13,7 +13,7 @@ function deleteByName(name: string, setData: Function)
         // usuniecie z localstorage
         const storedData = localStorage.getItem('data');
         let data = storedData ? JSON.parse(storedData) as any : {};
-        delete data[name]
+        delete data[id]
         localStorage.setItem('data', JSON.stringify(data))
         setData(data)
         alert(JSON.stringify(res))
@@ -38,7 +38,7 @@ function ListItem({no, deposit, setData, id}: any)
                 </button>
                 <button
                     id={id}
-                    onClick={() => deleteByName(deposit.deposit['@name'], setData)}
+                    onClick={() => deleteByName(deposit.deposit['@name'], setData, id)}
                     className="hover:cursor-pointer bg-red-500 hover:bg-red-600 text-white rounded px-3 py-2 ml-2 transition-shadow shadow-sm hover:shadow-red-200 flex items-center"
                 >
                     <MdDelete size={24} />
@@ -51,7 +51,7 @@ function ListItem({no, deposit, setData, id}: any)
 
 function List({content, setData}: any)
 {
-    return (<ul className="flex">
+    return (<ul className="flex flex-wrap justify-center items-stretch">
 
         {Object.keys(content).map((key: string, id: number) => {
             return <ListItem key={key} id={key} no={id} deposit={content[key]} setData={setData}/>
@@ -68,7 +68,7 @@ export function ListPage({content}: any) {
     
     return (
         <Skeleton> 
-            <div className="col-span-3 row-span-3 w-full h-96 overflow-auto flex justify-center">
+            <div className="col-span-3 row-span-3 h-[100%] overflow-auto flex justify-center">
                 <List content={data} setData={setData}/> 
             </div>
         </Skeleton>

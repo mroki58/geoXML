@@ -36,10 +36,12 @@ public class DeleteService : IDeleteService
     
     public ReturnMessage DeleteXmlWhereNodeLessThan(string nodeName, decimal maxValue)
     {
+        Console.WriteLine(maxValue);
+
         string query = @"
             DELETE FROM dbo.xmltable
             WHERE Content.exist(
-                '//*[local-name()=sql:variable(""@nodeName"") and number(text()) < sql:variable(""@maxValue"")]'
+                '//*[local-name()=sql:variable(""@nodeName"") and text() < sql:variable(""@maxValue"")]'
             ) = 1";
 
         SqlParameter[] parameters =
