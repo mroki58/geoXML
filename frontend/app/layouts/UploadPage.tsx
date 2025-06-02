@@ -133,9 +133,9 @@ async function onFormSubmit(event: any) {
             body: xml
         });
         const addResult = await addResponse.text();
-        console.log("Odpowiedź z dodawania do bazy:", addResult);
+        alert("Odpowiedź z dodawania do bazy: " + addResult);
     } catch (error) {
-        console.error("Błąd podczas wysyłania danych:", error);
+        alert("Błąd podczas wysyłania danych: " + error);
     }
 }
 

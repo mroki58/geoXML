@@ -84,8 +84,8 @@ router.patch('/name/:id', async function(req, res) {
 ///////////////////////////////////////////////////////////////
 
 router.delete('/quantity', async function(req, res) {
-  const { nodeName, maxValue } = req.query;
-  const path = `/less?nodeName=${encodeURIComponent(nodeName)}&maxValue=${maxValue}`;
+  const { maxValue } = req.query;
+  const path = `/less?nodeName=estimatedVolume&maxValue=${maxValue}`;
   await deleteFromBackend(path, res);
 });
 
@@ -96,9 +96,9 @@ router.delete('/name', async function(req, res) {
   await deleteFromBackend(path, res);
 });
 
-router.delete('/region', async function(req, res) {
-  const {nodeName, nodeValue} = req.query
-  const path = `?nodeName=${nodeName}&nodeValue=${nodeValue}`
+router.delete('/location', async function(req, res) {
+  const { nodeValue } = req.query
+  const path = `?nodeName=location&nodeValue=${nodeValue}`
   await deleteFromBackend(path, res)
 })
 
