@@ -5,4 +5,5 @@ export default [
     route("/display", "routes/display.tsx"),
     route("/upload", "routes/upload.tsx"),
     route("/list", "routes/list.tsx"),
+    route("/modify/:id", "routes/modify.tsx")
 ] satisfies RouteConfig;

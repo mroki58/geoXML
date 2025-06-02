@@ -1,6 +1,7 @@
 import type { Route } from "./+types/home";
 import { MapPage } from "../layouts/MapPage";
 import {parser} from "../utils/xmlparser";
+import {getAllBackendData} from "../utils/fetchContent"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,16 +11,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function clientLoader() {
-    const res = await fetch('/api/all')
-    const data = await res.json();
-
-    let xmlMap = data.data
-
-    Object.keys(xmlMap).map((key : string) => {
-      xmlMap[key] = xmlMap[key][0]
-    })
-
-    return xmlMap
+    return await getAllBackendData();
 }
 
 export default function Home({loaderData}: Route.ComponentProps) {
