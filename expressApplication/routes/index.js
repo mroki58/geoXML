@@ -49,7 +49,11 @@ router.post('/xml', express.text({type: 'application/xml'}), async function(req,
     console.log(req.body)
     const ans = await axios.post('http://localhost:5032/xml', {Xml: req.body});
 
-    res.status(200).send(String(ans.data));
+    if(ans.status === 200 && ans.data === 1) {
+      res.status(200).send({msg: 'Zasób został dodany pomyślnie'});
+    }else {
+      res.status(400).send({msg: ans.data});
+    }
 
   } catch (err) {
     console.error(err.message);

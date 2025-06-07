@@ -1,5 +1,6 @@
 using DbLibrary;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using azureWebAPI.Models;
 
 namespace azureWebAPI.Controllers;
@@ -57,9 +58,17 @@ public class XmlController : ControllerBase
     [HttpPatch("name/{id}")]
     public IActionResult PatchName(int id, [FromBody] StringDto name)
     {
+        int result;
         if (string.IsNullOrEmpty(name?.Value))
             return BadRequest("Name value is required.");
-        var result = _xmlRepo.ModifyName(name.Value, id);
+        try
+        {
+            result = _xmlRepo.ModifyName(name.Value, id);
+        }
+        catch (SqlException ex)
+        {
+            return Ok($"SQL Error: {ex.Message}");
+        }
         return Ok(result);
     }
 

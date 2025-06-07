@@ -13,7 +13,12 @@ async function patchXmlNode(path, res, data) {
   try {
     const url = buildCSharpUrl(path);
     const ans = await axios.patch(url, { Value: data });
-    res.status(200).send(String(ans.data));
+    if(ans.status === 200 && ans.data >= 1) 
+      res.status(200).send({msg: 'Zasób został zaktualizowany pomyślnie'});
+    else if(ans.status === 200)
+      res.status(400).send({msg: ans.data});
+    else
+      res.status(ans.status).send({msg: 'Błąd przy aktualizacji zasobu'});
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Błąd przy połączeniu z zewnętrznym API');
@@ -25,7 +30,10 @@ async function deleteFromBackend(path, res) {
   try {
     const url = buildCSharpUrl(path);
     const ans = await axios.delete(url);
-    res.status(200).send(String(ans.data));
+    if(ans.status === 200 && ans.data > 0)
+      res.status(200).send({msg: `Usunięto ${ans.data} elementów`});
+    else if(ans.status === 200 && ans.data === 0)
+      res.status(200).send({msg: 'Nie usunięto elementów'})
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Błąd przy połączeniu z zewnętrznym API');
@@ -89,7 +97,5 @@ router.delete('/location', async function(req, res) {
   const path = `/location?location=${encodeURIComponent(location)}`;
   await deleteFromBackend(path, res);
 })
-
-router.delete('/')
 
 module.exports = router;

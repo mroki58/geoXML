@@ -1,6 +1,7 @@
 using azureWebAPI.Models;
 using DbLibrary;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 
 namespace azureWebAPI.Controllers;
@@ -29,10 +30,18 @@ public class MainController : ControllerBase
     [HttpPost("xml")]
     public IActionResult AddXml([FromBody] XmlDto xml)
     {
-        if(xml?.Xml == null)
-            return BadRequest("XML content is required.");
+        int result;
 
-        var result = _appResources.repo.AddXmlToDb(xml.Xml);
+        if (xml?.Xml == null)
+            return BadRequest("XML content is required.");
+        try
+        {
+            result = _appResources.repo.AddXmlToDb(xml.Xml);
+        }
+        catch(SqlException ex)
+        {
+            return Ok($"SQL Error: {ex.Message}");
+        }
         return Ok(result);
     }
 

@@ -6,7 +6,7 @@ import { getAllBackendData } from '../utils/fetchContent'
 
 function deleteByName(name: string, setData: Function, id: number)
 {
-    fetch(`/api/deposit/name?nodeName=deposit&attrName=name&attrValue=${name}`, {
+    fetch(`/api/deposit/name?name=${name}`, {
         method: 'delete'
     }).then(res => res.json())
     .then(res => {
@@ -81,7 +81,7 @@ const HeaderButtons = ({locationUI, setLocationUI, refreshData}: any) => {
     
     return (<div>
         <Button label="Zlikwiduj znikające złoża" className="hover:cursor-pointer bg-red-500 hover:bg-red-600 text-white rounded px-3 py-2 transition-shadow shadow-sm hover:shadow-red-200 mr-3" onClick={dropWhereQuantityLessThan100}/>
-        <Button label="Usuń region" className="hover:cursor-pointer bg-red-500 hover:bg-red-600 text-white rounded px-3 py-2  transition-shadow shadow-sm hover:shadow-red-200 mr-60" onClick={toggleLocationUI}/>
+        <Button label="Usuń lokalizacje" className="hover:cursor-pointer bg-red-500 hover:bg-red-600 text-white rounded px-3 py-2  transition-shadow shadow-sm hover:shadow-red-200 mr-60" onClick={toggleLocationUI}/>
     </div>)
 }
 
@@ -125,7 +125,7 @@ export function ListPage({content}: any) {
 
     async function handleFetch() {
         const value = inputRef.current?.value || "";
-        await fetch(`/api/deposit/location?nodeValue=${value}`, { method: "DELETE" })
+        await fetch(`/api/deposit/location?location=${value}`, { method: "DELETE" })
             .then(res => res.json())
             .then(res => {
                 alert(JSON.stringify(res));
