@@ -1,18 +1,13 @@
-using azureWebAPI.Services;
-using azureWebAPI.Database;
+using azureWebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IAddService, AddService>();
-builder.Services.AddScoped<IDeleteService, DeleteService>();
-builder.Services.AddScoped<ISearchService, SearchService>();
-builder.Services.AddScoped<IModifyService, ModifyService>();
-
-builder.Services.AddSingleton<AzureDbContext>();
 builder.Services.AddControllers(); 
+
+builder.Services.AddSingleton<AppResources>();
 
 builder.Services.AddCors(options =>
 {
@@ -23,7 +18,6 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
-
 
 var app = builder.Build();
 

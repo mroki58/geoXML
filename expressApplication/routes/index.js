@@ -44,17 +44,12 @@ router.post('/xml/create', async function(req, res) {
 })
 
 
-router.post('/xml', express.text({type: 'application/xml'}), async function(req, res) {
+router.post('/xml', express.text({type: 'application/xml'}), async function(req, res) { 
   try {
-    const xml = JSON.parse(req.body).xml;
-  
-    const ans = await axios.post('http://localhost:5032/xml', xml, {
-      headers: {
-        'Content-Type': 'application/xml' 
-      }
-    });
+    console.log(req.body)
+    const ans = await axios.post('http://localhost:5032/xml', {Xml: req.body});
 
-    res.status(200).send(ans.data);
+    res.status(200).send(String(ans.data));
 
   } catch (err) {
     console.error(err.message);
@@ -64,7 +59,7 @@ router.post('/xml', express.text({type: 'application/xml'}), async function(req,
 
 router.get('/all', async function(req, res) {
   try {
-    const ans = await axios.get('http://localhost:5032/xml/str?path=/');
+    const ans = await axios.get('http://localhost:5032/all');
 
     res.status(200).send(ans.data);
 

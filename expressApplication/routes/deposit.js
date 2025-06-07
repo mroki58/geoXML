@@ -4,28 +4,16 @@ var axios = require('axios');
 
 // Funkcja pomocnicza do budowania pełnego URL
 function buildCSharpUrl(path) {
-  const CSharpURL = 'http://localhost:5032/xml';
+  const CSharpURL = 'http://localhost:5032/deposit';
   return CSharpURL + path;
 }
 
 // PATCH pomocnicza
-async function patchXmlNode(path, res) {
+async function patchXmlNode(path, res, data) {
   try {
     const url = buildCSharpUrl(path);
-    const ans = await axios.patch(url);
-    res.status(200).send(ans.data);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Błąd przy połączeniu z zewnętrznym API');
-  }
-}
-
-// GET pomocnicza
-async function fetchFromBackend(path, res) {
-  try {
-    const url = buildCSharpUrl(path);
-    const ans = await axios.get(url);
-    res.status(200).send(ans.data);
+    const ans = await axios.patch(url, { Value: data });
+    res.status(200).send(String(ans.data));
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Błąd przy połączeniu z zewnętrznym API');
@@ -37,7 +25,7 @@ async function deleteFromBackend(path, res) {
   try {
     const url = buildCSharpUrl(path);
     const ans = await axios.delete(url);
-    res.status(200).send(ans.data);
+    res.status(200).send(String(ans.data));
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Błąd przy połączeniu z zewnętrznym API');
@@ -48,36 +36,36 @@ async function deleteFromBackend(path, res) {
 router.patch('/latitude/:id', async function(req, res) {
   const { latitude } = req.body;
   const id = req.params.id;
-  const path = `/node/${id}?path=/deposit/geography/latitude&value=${encodeURIComponent(latitude)}`;
-  await patchXmlNode(path, res);
+  const path = `/latitude/${id}`;
+  await patchXmlNode(path, res, latitude);
 });
 
 router.patch('/longitude/:id', async function(req, res) {
   const { longitude } = req.body;
   const id = req.params.id;
-  const path = `/node/${id}?path=/deposit/geography/longitude&value=${encodeURIComponent(longitude)}`;
-  await patchXmlNode(path, res);
+  const path = `/longitude/${id}`;
+  await patchXmlNode(path, res, longitude);
 });
 
 router.patch('/radius/:id', async function(req, res) {
   const { radius } = req.body;
   const id = req.params.id;
-  const path = `/node/${id}?path=/deposit/geography/radius&value=${encodeURIComponent(radius)}`;
-  await patchXmlNode(path, res);
+  const path = `/radius/${id}`;
+  await patchXmlNode(path, res, radius);
 });
 
 router.patch('/quantity/:id', async function(req, res) {
   const { quantity } = req.body;
   const id = req.params.id;
-  const path = `/node/${id}?path=/deposit/geology/estimatedVolume&value=${encodeURIComponent(quantity)}`;
-  await patchXmlNode(path, res);
+  const path = `/quantity/${id}`;
+  await patchXmlNode(path, res, quantity);
 });
 
 router.patch('/name/:id', async function(req, res) {
   const { name } = req.body;
   const id = req.params.id;
-  const path = `/attr/${id}?path=/deposit&value=${encodeURIComponent(name)}&attr=name`;
-  await patchXmlNode(path, res);
+  const path = `/name/${id}`;
+  await patchXmlNode(path, res, name);
 });
 
 
@@ -85,21 +73,21 @@ router.patch('/name/:id', async function(req, res) {
 
 router.delete('/quantity', async function(req, res) {
   const { maxValue } = req.query;
-  const path = `/less?nodeName=estimatedVolume&maxValue=${maxValue}`;
+  const path = `/quantity?maxValue=${maxValue}`;
   await deleteFromBackend(path, res);
 });
 
 // Przykład DELETE endpointu
 router.delete('/name', async function(req, res) {
-  const { nodeName, attrName, attrValue } = req.query;
-  const path = `/attr?nodeName=${encodeURIComponent(nodeName)}&attrName=${encodeURIComponent(attrName)}&attrValue=${encodeURIComponent(attrValue)}`;
+  const { name } = req.query;
+  const path = `/name?name=${encodeURIComponent(name)}`;
   await deleteFromBackend(path, res);
 });
 
 router.delete('/location', async function(req, res) {
-  const { nodeValue } = req.query
-  const path = `?nodeName=location&nodeValue=${nodeValue}`
-  await deleteFromBackend(path, res)
+  const { location } = req.query;
+  const path = `/location?location=${encodeURIComponent(location)}`;
+  await deleteFromBackend(path, res);
 })
 
 router.delete('/')

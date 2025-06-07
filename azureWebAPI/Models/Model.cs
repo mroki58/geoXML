@@ -1,36 +1,30 @@
 namespace azureWebAPI.Models;
 
-public class ReturnMessage
+public class DepositDto
 {
-    public string? message { get; set; }
-    
+    public string? Name { get; set; }
+    public string? Type { get; set; }
+    public double EstimatedVolume { get; set; }
+    public double Depth { get; set; }
+    public string? Status { get; set; }
+    public string? Location { get; set; }
+    public string? Region { get; set; }
+    public double Latitude { get; set; }
+    public double Longitude { get; set; }
+    public double Radius { get; set; }
 }
 
-//
-public class XmlData
+public class XmlDto
 {
-    public SortedDictionary<int, List<string>>? data { get; set; }
-    public string? message { get; set; }
-
+    public string? Xml { get; set; }
 }
 
-public class CreateXmlRequest
+public class DoubleDto
 {
-    public string? name { get; set; }
-    public string? type { get; set; }
-    public double estimatedVolume { get; set; }
-    public double depth { get; set; }
-    public string? status { get; set; }
-    public string? location { get; set; }
-    public string? region { get; set; }
-    public double latitude { get; set; }
-    public double longitude { get; set; }
-    public double radius { get; set; }
+    public double? Value { get; set; }
 }
 
-
-public class MyXML
+public class StringDto
 {
-    public string? xml { get; set; }
+    public string? Value { get; set; }
 }
-
